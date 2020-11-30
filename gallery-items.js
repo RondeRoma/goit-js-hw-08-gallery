@@ -14,6 +14,9 @@ images.map((el, index) => {
 
 refs.galleryContainer.addEventListener("click", (e) => {
   e.preventDefault();
+  if(e.target.nodeName !== "IMG"){
+return
+  };
   let modalRef = e.target.dataset.source;
   refs.galleryLightbox.classList.add("is-open");
   refs.galleryLightboxImage.src = modalRef;
