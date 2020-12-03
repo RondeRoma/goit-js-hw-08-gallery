@@ -6,39 +6,53 @@ const refs = {
   closeModalOverlay: document.querySelector(".lightbox__overlay"),
   galleryLightboxImage: document.querySelector(".lightbox__image"),
   btnCloseModal: document.querySelector(".lightbox__button"),
+  buttonRight: document.querySelector(".svg_right"),
+  buttonLeft: document.querySelector(".svg_left"),
 };
 
 images.map((el, index) => {
   refs.galleryContainer.innerHTML += `<li class="gallery__item"><a class="gallery__link" href="${el.preview}"><img class="gallery__image" src="${el.preview}" data-source="${el.original}" alt="${el.description}" data-index="${index}"/></a></li>`;
 });
 
-refs.galleryContainer.addEventListener("click", (e) => {
-  e.preventDefault();
-  if(e.target.nodeName !== "IMG"){
-return
-  };
-  let modalRef = e.target.dataset.source;
-  refs.galleryLightbox.classList.add("is-open");
-  refs.galleryLightboxImage.src = modalRef;
-  refs.galleryLightboxImage.dataset.index = e.target.dataset.index;
-});
-
+refs.galleryContainer.addEventListener("click", openModal);
 refs.btnCloseModal.addEventListener("click", removeClassList);
 refs.closeModalOverlay.addEventListener("click", removeClassList);
+refs.buttonRight.addEventListener("click", arrowRight);
+refs.buttonLeft.addEventListener("click", arrowLeft);
 
-window.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
+function onKeybordPress(e) {
+  const ESC_KEY_CODE = "Escape";
+  const isEscKey = e.code === ESC_KEY_CODE;
+  
+  if (isEscKey) {
     removeClassList();
-  }
-  if (e.key === "ArrowLeft") {
-    arrowLeft();
   }
   if (e.key === "ArrowRight") {
     arrowRight();
   }
-});
+  if (e.key === "ArrowLeft") {
+    arrowLeft();
+  }
+}
+function openModal(e){
+  e.preventDefault();
+  if (e.target.nodeName !== "IMG") {
+    return;
+  }
+  window.addEventListener("keydown", onKeybordPress);
+  window.addEventListener("keydown", arrowRight);
+  window.addEventListener("keydown", arrowLeft);
+
+  refs.galleryLightbox.classList.add("is-open");
+  refs.galleryLightboxImage.src = e.target.dataset.source;
+  refs.galleryLightboxImage.dataset.index = e.target.dataset.index;
+}
 
 function removeClassList() {
+  window.removeEventListener('keydown', onKeybordPress);
+  window.removeEventListener('keydown', arrowRight);
+  window.removeEventListener('keydown', arrowLeft);
+
   refs.galleryLightbox.classList.remove("is-open");
   refs.galleryLightboxImage.src = "";
 }
