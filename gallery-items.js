@@ -40,9 +40,7 @@ function openModal(e){
     return;
   }
   window.addEventListener("keydown", onKeybordPress);
-  window.addEventListener("keydown", arrowRight);
-  window.addEventListener("keydown", arrowLeft);
-
+  
   refs.galleryLightbox.classList.add("is-open");
   refs.galleryLightboxImage.src = e.target.dataset.source;
   refs.galleryLightboxImage.dataset.index = e.target.dataset.index;
@@ -50,9 +48,7 @@ function openModal(e){
 
 function removeClassList() {
   window.removeEventListener('keydown', onKeybordPress);
-  window.removeEventListener('keydown', arrowRight);
-  window.removeEventListener('keydown', arrowLeft);
-
+ 
   refs.galleryLightbox.classList.remove("is-open");
   refs.galleryLightboxImage.src = "";
 }
